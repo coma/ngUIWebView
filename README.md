@@ -7,7 +7,7 @@ Install
 -------
 
 ```
-bower install ngUIWebView
+bower install ng-uiwebview
 ```
 
 Usage
@@ -66,7 +66,6 @@ Delegate your UIWebView instance and add some actions
                     error:&error];
     
     return [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding];
-
 }
 ```
 
