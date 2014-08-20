@@ -1,0 +1,27 @@
+{
+    "name"           : "ngUIWebView",
+    "description"    : "An AngularJS service to send messages from javascript to Objective-C.",
+    "homepage"       : "https://github.com/coma/ngUIWebView",
+    "repository"     : "https://github.com/coma/ngUIWebView",
+    "version"        : "0.1.0",
+    "license"        : "MIT",
+    "private"        : false,
+    "main"           : "ngUIWebView.min.js",
+    "authors"     : [
+        "Eduardo García Sanz <eduardo@comakai.com>"
+    ],
+    "keywords"    : [
+        "angularjs", "uiwebview", "ios", "bridge", "objective-c"
+    ],
+    "dependencies": {
+    },
+    "devDependencies": {
+        "gulp"       : "^3",
+        "gulp-jshint": "^1",
+        "gulp-uglify": "^0",
+        "gulp-rename": "^1"
+    },
+    "engines": {
+        "node"       : ">=0.10.0"
+    }
+}
