@@ -9,8 +9,6 @@
     
     NSString *url = [[request URL] absoluteString];
     
-    NSLog(@"%@", url);
-    
     if ([url hasPrefix:@"nguiwv://"]) {
         
         NSString *action;
