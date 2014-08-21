@@ -31,7 +31,8 @@
             @try {
                 
                 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-                id response = [self performSelector:selector withObject:json[@"data"]];
+                NSData *data = [NSKeyedArchiver archivedDataWithRootObject:json[@"data"]];
+                id response  = [self performSelector:selector withObject:data];
                 
                 if (response == nil) {
                     

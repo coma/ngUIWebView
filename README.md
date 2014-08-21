@@ -48,62 +48,82 @@ Delegate your UIWebView instance and add some actions
     webView.delegate = self;
 }
 
-- (NSString*)saveAction:(NSDictionary *)data
+- (void)saveAction:(NSData *)data
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:data forKey:@"mystorage"];
-    
-    return @"";
+    [[NSUserDefaults standardUserDefaults] setObject:(NSDictionary*) [NSKeyedUnarchiver unarchiveObjectWithData:data] forKey:@"storage"];
 }
 
-- (NSString*)loadAction:(NSDictionary *)data
+- (NSData*)loadAction:(NSData *)data
 {
+    id storage = [[NSUserDefaults standardUserDefaults] objectForKey:@"storage"];
+    
+    if (storage == nil) {
+        
+        return nil;
+    }
+    
     NSError *error;
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSData *json = [NSJSONSerialization
-                    dataWithJSONObject:[defaults objectForKey:@"mystorage"]
+    NSData *response = [NSJSONSerialization
+                    dataWithJSONObject:storage
                     options:0
                     error:&error];
     
-    return [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding];
+    return response;
+}
+
+- (void)notifyAction:(NSDictionary *)data
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"This is coming..."
+                                                    message:@"FROM THE OTHER SIDE"
+                                                   delegate:self
+                                          cancelButtonTitle:@"Cool!!!"
+                                          otherButtonTitles:nil];
+    [alert show];
 }
 ```
 
-Add the module to your AngularJS app
-
-```javascript
-angular.module('app', ['ngUIWebView']);
-```
-
-And use it!
+Add the module to your AngularJS app and use it!
 
 ```javascript
 angular
-	.module('app')
-	.controller('MyController', ['UIWebView', function (UIWebView) {
+    .module('app', ['ngUIWebView'])
+    .controller('MyController', function (UIWebView) {
 
-	    UIWebView
-			.send('save', {
-				foo: [1, 2, 3]
-			})
-			.then(function () {
+        var self = this;
+        self.data = {};
 
-				console.log('saved!');
-			})
-			.catch(function (error) {
+        var error = function (error) {
 
-				console.log(error);
-			});
+            alert(error.message);
+        };
 
-	    UIWebView
-	        .send('load')
-	        .then(function (data) {
+        self.save = function (form) {
 
-	            console.log(data);
-	        })
-	        .catch(function (error) {
+            UIWebView
+                .send('save', self.data)
+                .then(function () {
 
-	            console.log(error);
-	        });
-	}]);
+                    form.$setPristine();
+                })
+                .catch(error);
+        };
+
+        self.load = function () {
+
+            UIWebView
+                .send('load')
+                .then(function (data) {
+
+                    angular.extend(self.data, data);
+                })
+                .catch(error);
+        };
+
+        self.notify = function () {
+
+            UIWebView
+                .send('notify')
+                .catch(error);
+        };
+    });
 ```

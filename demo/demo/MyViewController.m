@@ -36,12 +36,12 @@
     [webView loadRequest:[NSURLRequest requestWithURL:htmlPath]];
 }
 
-- (void)saveAction:(NSDictionary *)data
+- (void)saveAction:(NSData *)data
 {
-    [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"storage"];
+    [[NSUserDefaults standardUserDefaults] setObject:(NSDictionary*) [NSKeyedUnarchiver unarchiveObjectWithData:data] forKey:@"storage"];
 }
 
-- (NSData*)loadAction:(NSDictionary *)data
+- (NSData*)loadAction:(NSData *)data
 {
     id storage = [[NSUserDefaults standardUserDefaults] objectForKey:@"storage"];
     
