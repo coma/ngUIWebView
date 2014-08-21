@@ -5,6 +5,11 @@ angular
         var self = this;
         self.data = {};
 
+        var error = function (error) {
+
+            alert(error.message);
+        };
+
         self.save = function (form) {
 
             UIWebView
@@ -13,10 +18,7 @@ angular
 
                     form.$setPristine();
                 })
-                .catch(function (error) {
-
-                    alert('error...');
-                });
+                .catch(error);
         };
 
         self.load = function () {
@@ -27,19 +29,13 @@ angular
 
                     angular.extend(self.data, data);
                 })
-                .catch(function (error) {
-
-                    alert('error...');
-                });
+                .catch(error);
         };
 
         self.notify = function () {
 
             UIWebView
                 .send('notify')
-                .catch(function (error) {
-
-                    alert('error...');
-                });
+                .catch(error);
         };
     });

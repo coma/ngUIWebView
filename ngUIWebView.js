@@ -46,21 +46,19 @@ angular
 
 	    var response = function (id, data) {
 
-	        data = data !== '' ? JSON.parse(data) : null;
-	        
 	        extract(id)
 	            .response
-	            .resolve(data);
+	            .resolve(data ? JSON.parse(data) : null);
 	    };
 
-	    var error = function (id) {
+	    var error = function (id, message) {
 
 	        var entry  = extract(id);
 	        var method = entry.request.method;
 
 	        entry
 	            .response
-	            .reject(new Error(method + ' does not exist.'));
+	            .reject(new Error(message));
 	    };
 
 	    window.nguiwv = {

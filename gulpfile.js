@@ -14,5 +14,6 @@ gulp.task('default', function() {
         .pipe(jshint.reporter('default'))
         .pipe(uglify())
         .pipe(rename('ngUIWebView.min.js'))
-        .pipe(gulp.dest('.'));
+        .pipe(gulp.dest('.'))
+        .pipe(gulp.dest('demo/demo/web'));
 });

@@ -36,36 +36,37 @@
     [webView loadRequest:[NSURLRequest requestWithURL:htmlPath]];
 }
 
-- (NSString*)saveAction:(NSDictionary *)data
+- (void)saveAction:(NSDictionary *)data
 {
     [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"storage"];
-    
-    return @"";
 }
 
-- (NSString*)loadAction:(NSDictionary *)data
+- (NSData*)loadAction:(NSDictionary *)data
 {
     id storage = [[NSUserDefaults standardUserDefaults] objectForKey:@"storage"];
     
     if (storage == nil) {
         
-        return @"";
+        return nil;
     }
     
     NSError *error;
-    NSData *json = [NSJSONSerialization
+    NSData *response = [NSJSONSerialization
                     dataWithJSONObject:storage
                     options:0
                     error:&error];
     
-    return [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding];
+    return response;
 }
 
-- (NSString*)notifyAction:(NSDictionary *)data
+- (void)notifyAction:(NSDictionary *)data
 {
-    NSLog(@"Notified!");
-    
-    return @"";
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"This is coming..."
+                                                    message:@"FROM THE OTHER SIDE"
+                                                   delegate:self
+                                          cancelButtonTitle:@"Cool!!!"
+                                          otherButtonTitles:nil];
+    [alert show];
 }
 
 @end

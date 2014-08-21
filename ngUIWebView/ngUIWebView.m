@@ -22,20 +22,34 @@
                                 options:kNilOptions
                                 error:&error];
         
-        NSString     *method = [NSString stringWithFormat:@"%@Action:", [json objectForKey:@"method"]];
-        NSDictionary *data   = [json objectForKey:@"data"];
+        NSString     *method = [NSString stringWithFormat:@"%@Action:", json[@"method"]];
         
         SEL selector = NSSelectorFromString(method);
         
         if ([self respondsToSelector:selector]) {
             
-            #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-            NSString *response = [self performSelector:selector withObject:data];
-            action = [NSString stringWithFormat:@"nguiwv.response(%@, '%@');", identifier, response];
+            @try {
+                
+                #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+                id response = [self performSelector:selector withObject:json[@"data"]];
+                
+                if (response == nil) {
+                    
+                    action = [NSString stringWithFormat:@"nguiwv.response(%@);", identifier];
+                    
+                } else {
+                    
+                    action = [NSString stringWithFormat:@"nguiwv.response(%@, '%@');", identifier, [[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]];
+                }
+                
+            } @catch (NSException * e) {
+                
+                action = [NSString stringWithFormat:@"nguiwv.error(%@, '%@');", identifier, [e reason]];
+            }
             
         } else {
             
-            action = [NSString stringWithFormat:@"nguiwv.error(%@);", identifier];
+            action = [NSString stringWithFormat:@"nguiwv.error(%@, 'Method not found.');", identifier];
         }
         
         [wv stringByEvaluatingJavaScriptFromString:action];
