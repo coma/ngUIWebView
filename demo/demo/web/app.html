@@ -1,0 +1,20 @@
+<!doctype html>
+<html ng-app="app">
+    <head>
+        <title>ngUIWebView Demo</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body ng-controller="MyController as main">
+        <div>
+            <form ng-submit="main.save(form)" name="form">
+                <input type="text" placeholder="Write something!" required ng-model="main.data.text">
+                <button type="submit" ng-disabled="form.$pristine || !form.$valid">Save</button>
+            </form>
+            <button ng-click="main.load()">Load</button>
+            <button ng-click="main.notify()">Notify</button>
+        </div>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.22/angular.min.js"></script>
+        <script src="ngUIWebView.min.js"></script>
+        <script src="app.js"></script>
+    </body>
+</html>
